@@ -43,4 +43,6 @@ def generar_grafico_oferta(df_oferta, df_ocupacion):
         template='plotly_white',
         shapes=shapes
     )
+    
+    fig.show()
     return fig

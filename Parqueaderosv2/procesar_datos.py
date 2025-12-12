@@ -1,4 +1,3 @@
-
 from pathlib import Path
 import pandas as pd
 from grafico_entradas_salidas import calcular_entradas_salidas_hora, generar_grafico_entradas_salidas

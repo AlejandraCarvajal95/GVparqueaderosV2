@@ -13,7 +13,6 @@ def calcular_ocupacion_hora(df_procesado):
     ocupacion_hora = ocupacion_hora.sort_values(by='HORA_GRUPO')
     ocupacion_hora = ocupacion_hora[['HORA', 'OCUPACION']]
 
-    print(ocupacion_hora)
     return ocupacion_hora
 
 def generar_grafico_ocupacion(df_ocupacion):
@@ -36,4 +35,5 @@ def generar_grafico_ocupacion(df_ocupacion):
         template='plotly_white'
     )
 
+    fig.show()
     return fig

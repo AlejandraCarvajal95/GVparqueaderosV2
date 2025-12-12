@@ -43,4 +43,6 @@ def generar_grafico_zer(df_oferta_procesado, df_ocupacion):
         template='plotly_white',
         shapes=shapes
     )
+    
+    fig.show()
     return fig

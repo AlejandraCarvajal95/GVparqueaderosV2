@@ -71,4 +71,5 @@ def generar_grafico_entradas_salidas(df_entradas_salidas, df_ocupacion):
         template='plotly_white'
     )
     
+    fig.show()
     return fig

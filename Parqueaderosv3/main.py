@@ -1,6 +1,8 @@
 from pathlib import Path
-from generar_tablas.generar_informe.generar_informe import generar_informe
+from generar_informe.generar_informe import generar_informe
 from generar_tablas.tabla_oferta_ocupacion import generar_tabla_oferta_ocupacion
+from generar_tablas.tabla_oferta_llegadas import generar_tabla_oferta_llegadas
+from generar_tablas.tabla_oferta_irt import generar_tabla_oferta_irt
 import utils
 from generar_graficas.grafico_entradas_salidas import generar_grafica_entradas_salidas
 from generar_graficas.grafico_ocupacion import calcular_ocupacion_via, calcular_ocupacion_parqueadero, generar_grafica_ocupacion
@@ -47,7 +49,9 @@ if __name__ == "__main__":
     resultados = {
         'via': {'autos': {}, 'motos': {}},
         'parqueadero': {'autos': {}, 'motos': {}},
-        'tablas_oferta_ocupacion': {}
+        'tablas_oferta_ocupacion': {},
+        'tablas_oferta_llegadas': {},
+        'tablas_oferta_irt': {}
     }
    
     for zona in zonas:
@@ -89,7 +93,23 @@ if __name__ == "__main__":
             tabla = generar_tabla_oferta_ocupacion(zona, df_capacidades_procesado, df_autos_procesado, df_motos_procesado)
             if tabla is not None:
                 resultados['tablas_oferta_ocupacion'][zona] = tabla
-                    
+        
+        # Tabla oferta/llegadas
+        if tiene_cap:
+            tabla_lleg = generar_tabla_oferta_llegadas(zona, df_capacidades_procesado, df_autos_procesado, df_motos_procesado)
+            if tabla_lleg is not None:
+                resultados['tablas_oferta_llegadas'][zona] = tabla_lleg
+        
+        # Tabla oferta/IRT
+        if tiene_cap:
+            tabla_irt = generar_tabla_oferta_irt(zona, df_capacidades_procesado, df_autos_procesado, df_motos_procesado)
+            if tabla_irt is not None:
+                print("tabla_irt:", tabla_irt)
+                print("//////////////////////////////")
+                resultados['tablas_oferta_irt'][zona] = tabla_irt
+            else:
+                print("No se generó tabla IRT para zona:", zona)
+    
         # Parqueaderos Autos y Motos
         if df_parqueaderos_procesado is not None:
             for tipo_dia in tipos_dia:
@@ -106,6 +126,7 @@ if __name__ == "__main__":
                         if datos['capacidad'] > 0:
                             generar_grafica_oferta_ocupacion(datos, zona, tipo_dia, tipo_veh, 'Parqueadero', graficas_dir / f"{base}_oferta.png")
     # Generar archivo Excel con resultados
+    print(f"\nTablas IRT generadas: {list(resultados['tablas_oferta_irt'].keys())}")
     generar_excel(zonas,df_autos_procesado,df_motos_procesado,df_parqueaderos_procesado, resultados, output_dir)
     generar_informe(df_autos_procesado, df_motos_procesado, df_parqueaderos_procesado, zonas, resultados, output_dir, graficas_dir)
     print ("Análisis completado. Resultados guardados en 'datos_salida'.")

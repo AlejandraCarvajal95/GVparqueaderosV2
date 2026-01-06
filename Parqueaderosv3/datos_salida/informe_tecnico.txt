@@ -1,6 +1,6 @@
 ================================================================================
 INFORME TÉCNICO - ANÁLISIS DE ESTACIONAMIENTO
-Fecha: 2026-01-05 23:09
+Fecha: 2026-01-06 10:19
 ================================================================================
 
 1. DATOS DE ENTRADA
@@ -26,21 +26,23 @@ Fecha: 2026-01-05 23:09
 
    AUTOS - TIPICO:
       Ocupación Máxima: 30.0
+      Llegadas Totales: 74.0
       Oferta Real Total: 210
       Ocupación Media: 8.10%
       Duración Media (Dm): 2.195 hrs
-      Índice de Rotación Total (IRt): 1.219
-      Índice de Rotación Horario: 0.203
+      Índice de Rotación Total (IRt): 0.352
+      Índice de Rotación Horario: 0.059
       Tasa de Llegada: 0.4
       Tasa de Salida: 0.3
       Reserva de estacionamiento: 180.0
 
    AUTOS - SABADO:
       Ocupación Máxima: 27.0
+      Llegadas Totales: 65.0
       Oferta Real Total: 210
       Ocupación Media: 6.11%
       Duración Media (Dm): 1.470 hrs
-      Índice de Rotación Total (IRt): 0.314
+      Índice de Rotación Total (IRt): 0.31
       Índice de Rotación Horario: 0.052
       Tasa de Llegada: 0.3
       Tasa de Salida: 0.3
@@ -48,11 +50,12 @@ Fecha: 2026-01-05 23:09
 
    AUTOS - DOMINGO:
       Ocupación Máxima: 31.0
+      Llegadas Totales: 52.0
       Oferta Real Total: 210
       Ocupación Media: 4.29%
       Duración Media (Dm): 1.093 hrs
-      Índice de Rotación Total (IRt): 0.257
-      Índice de Rotación Horario: 0.043
+      Índice de Rotación Total (IRt): 0.248
+      Índice de Rotación Horario: 0.041
       Tasa de Llegada: 0.2
       Tasa de Salida: 0.2
       Reserva de estacionamiento: 179.0
@@ -61,33 +64,36 @@ Fecha: 2026-01-05 23:09
 
    AUTOS - TIPICO:
       Ocupación Máxima: 77.0
+      Llegadas Totales: 254.0
       Oferta Real Total: 366
       Ocupación Media: 14.96%
       Duración Media (Dm): 2.057 hrs
-      Índice de Rotación Total (IRt): 1.956
-      Índice de Rotación Horario: 0.326
+      Índice de Rotación Total (IRt): 0.693
+      Índice de Rotación Horario: 0.115
       Tasa de Llegada: 0.7
       Tasa de Salida: 0.6
       Reserva de estacionamiento: 289.0
 
    AUTOS - SABADO:
       Ocupación Máxima: 198.0
+      Llegadas Totales: 666.0
       Oferta Real Total: 366
       Ocupación Media: 44.44%
       Duración Media (Dm): 1.664 hrs
-      Índice de Rotación Total (IRt): 1.943
-      Índice de Rotación Horario: 0.324
+      Índice de Rotación Total (IRt): 1.82
+      Índice de Rotación Horario: 0.303
       Tasa de Llegada: 1.8
       Tasa de Salida: 1.4
       Reserva de estacionamiento: 168.0
 
    AUTOS - DOMINGO:
       Ocupación Máxima: 166.0
+      Llegadas Totales: 509.0
       Oferta Real Total: 366
       Ocupación Media: 32.06%
       Duración Media (Dm): 1.480 hrs
-      Índice de Rotación Total (IRt): 1.508
-      Índice de Rotación Horario: 0.251
+      Índice de Rotación Total (IRt): 1.391
+      Índice de Rotación Horario: 0.232
       Tasa de Llegada: 1.4
       Tasa de Salida: 1.1
       Reserva de estacionamiento: 200.0
@@ -96,17 +102,19 @@ Fecha: 2026-01-05 23:09
 
    AUTOS - TIPICO:
       Ocupación Máxima: 140.0
+      Llegadas Totales: 383.0
       Oferta Real Total: 992
       Ocupación Media: 9.14%
       Duración Media (Dm): 2.218 hrs
-      Índice de Rotación Total (IRt): 1.584
-      Índice de Rotación Horario: 0.264
+      Índice de Rotación Total (IRt): 0.386
+      Índice de Rotación Horario: 0.064
       Tasa de Llegada: 0.4
       Tasa de Salida: 0.3
       Reserva de estacionamiento: 852.0
 
    AUTOS - SABADO:
       Ocupación Máxima: 75.0
+      Llegadas Totales: 75.0
       Oferta Real Total: 992
       Ocupación Media: 1.26%
       Duración Media (Dm): 1.000 hrs
@@ -120,17 +128,19 @@ Fecha: 2026-01-05 23:09
 
    AUTOS - TIPICO:
       Ocupación Máxima: 67.0
+      Llegadas Totales: 216.0
       Oferta Real Total: 717
       Ocupación Media: 7.86%
       Duración Media (Dm): 2.636 hrs
-      Índice de Rotación Total (IRt): 0.724
-      Índice de Rotación Horario: 0.121
+      Índice de Rotación Total (IRt): 0.301
+      Índice de Rotación Horario: 0.05
       Tasa de Llegada: 0.3
       Tasa de Salida: 0.2
       Reserva de estacionamiento: 650.0
 
    AUTOS - SABADO:
       Ocupación Máxima: 5.0
+      Llegadas Totales: 16.0
       Oferta Real Total: 717
       Ocupación Media: 0.42%
       Duración Media (Dm): 1.125 hrs
@@ -142,6 +152,7 @@ Fecha: 2026-01-05 23:09
 
    AUTOS - DOMINGO:
       Ocupación Máxima: 3.0
+      Llegadas Totales: 5.0
       Oferta Real Total: 717
       Ocupación Media: 0.16%
       Duración Media (Dm): 1.600 hrs
@@ -155,33 +166,36 @@ Fecha: 2026-01-05 23:09
 
    AUTOS - TIPICO:
       Ocupación Máxima: 393.0
+      Llegadas Totales: 972.0
       Oferta Real Total: 801
       Ocupación Media: 28.03%
       Duración Media (Dm): 2.508 hrs
-      Índice de Rotación Total (IRt): 1.519
-      Índice de Rotación Horario: 0.253
+      Índice de Rotación Total (IRt): 1.213
+      Índice de Rotación Horario: 0.202
       Tasa de Llegada: 1.2
       Tasa de Salida: 1.0
       Reserva de estacionamiento: 408.0
 
    AUTOS - SABADO:
       Ocupación Máxima: 212.0
+      Llegadas Totales: 709.0
       Oferta Real Total: 801
       Ocupación Media: 18.64%
       Duración Media (Dm): 1.597 hrs
-      Índice de Rotación Total (IRt): 0.908
-      Índice de Rotación Horario: 0.151
+      Índice de Rotación Total (IRt): 0.885
+      Índice de Rotación Horario: 0.148
       Tasa de Llegada: 0.9
       Tasa de Salida: 0.7
       Reserva de estacionamiento: 589.0
 
    AUTOS - DOMINGO:
       Ocupación Máxima: 125.0
+      Llegadas Totales: 437.0
       Oferta Real Total: 801
       Ocupación Media: 12.42%
       Duración Media (Dm): 1.551 hrs
-      Índice de Rotación Total (IRt): 0.592
-      Índice de Rotación Horario: 0.099
+      Índice de Rotación Total (IRt): 0.546
+      Índice de Rotación Horario: 0.091
       Tasa de Llegada: 0.5
       Tasa de Salida: 0.4
       Reserva de estacionamiento: 676.0

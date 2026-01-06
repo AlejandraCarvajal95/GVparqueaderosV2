@@ -1,7 +1,7 @@
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from datetime import datetime
-from generar_tablas.escribir_datos import escribir_datos_ocupacion, escribir_indicadores, escribir_oferta_ocupacion
+from generar_tablas.escribir_datos import escribir_datos_ocupacion, escribir_indicadores, escribir_oferta_ocupacion, escribir_oferta_llegadas, escribir_oferta_irt
 import utils
 
 def generar_excel(zonas,df_autos,df_motos,df_parqueaderos, resultados, output_dir):
@@ -47,6 +47,19 @@ def generar_excel(zonas,df_autos,df_motos,df_parqueaderos, resultados, output_di
         nombre = f'OO_{utils.limpiar_nombre(zona)[:20]}'
         ws = wb.create_sheet(nombre)
         escribir_oferta_ocupacion(ws, df_oo, zona, header_fill, header_font, border, center)
+    
+    # TABLAS OFERTA/LLEGADAS
+    for zona, df_ol in resultados['tablas_oferta_llegadas'].items():
+        nombre = f'OL_{utils.limpiar_nombre(zona)[:20]}'
+        ws = wb.create_sheet(nombre)
+        escribir_oferta_llegadas(ws, df_ol, zona, header_fill, header_font, border, center)
+    
+    # TABLAS OFERTA/IRT
+    for zona, df_irt in resultados['tablas_oferta_irt'].items():
+        nombre = f'IRT_{utils.limpiar_nombre(zona)[:20]}'
+        print(f"Creando hoja: {nombre} para zona: {zona}")
+        ws = wb.create_sheet(nombre)
+        escribir_oferta_irt(ws, df_irt, zona, header_fill, header_font, border, center)
     
     # DATOS OCUPACIÓN
     ws = wb.create_sheet('DATOS_OCUPACIÓN')

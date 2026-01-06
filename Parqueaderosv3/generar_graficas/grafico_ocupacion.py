@@ -83,11 +83,13 @@ def calcular_ocupacion_via(df_procesado, df_capacidades, zona, tipo_dia, tipo_ve
     dur_media = np.mean(duraciones) if duraciones else 0
     
     total_veh = df_f['PLACA'].nunique()
-    irt = total_veh / capacidad if capacidad > 0 else 0
-    irh = irt / len(horas) if horas else 0
     
     total_ent = sum(entradas_por_hora.values())
     total_sal = sum(salidas_por_hora.values())
+
+    #irt = total_veh / capacidad if capacidad > 0 else 0
+    irt = total_ent / capacidad if capacidad > 0 else 0 # se cambia total_veh por total_ent para calcular IRt
+    irh = irt / len(horas) if horas else 0
 
     #ocupacion_hora = pd.DataFrame(list(ocupacion_por_hora.items()), columns=['HORA', 'OCUPACION'])
     resultado =  {
@@ -97,6 +99,7 @@ def calcular_ocupacion_via(df_procesado, df_capacidades, zona, tipo_dia, tipo_ve
         'capacidad': capacidad,
         'indicadores': {
             'Ocupación Máxima': round(ocup_max, 0),
+            'Llegadas Totales': round(total_ent, 0),
             'Oferta Real Total': round(capacidad, 0),
             'Ocupación Media': f"{ocup_media_pct:.2f}%",
             'Duración Media (Dm)': f"{dur_media:.3f} hrs",

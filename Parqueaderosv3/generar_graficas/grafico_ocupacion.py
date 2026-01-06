@@ -19,9 +19,8 @@ def calcular_ocupacion_via(df_procesado, df_capacidades, zona, tipo_dia, tipo_ve
    # print (df_f.head())
     
     fechas = df_f['DIA'].unique()
-    #print(f"Fechas unicas encontradas: {fechas}")
-    horas = utils.HORAS_DIA_TIPICO if tipo_dia == 'TIPICO' else utils.HORAS_DIA_ATIPICO
-    #print (f"Horas a procesar: {horas}")
+    # Obtener horas dinámicamente desde los datos reales
+    horas = utils.obtener_rango_horas(df_f, tipo_dia)
     ocupacion_por_hora = {}
     entradas_por_hora = {}
     salidas_por_hora = {}
@@ -129,7 +128,8 @@ def calcular_ocupacion_parqueadero(df_parqueaderos, zona, tipo_dia, tipo_vehicul
         return None
     
     fechas = df_f['DIA'].unique()
-    horas = utils.HORAS_DIA_TIPICO if tipo_dia == 'TIPICO' else utils.HORAS_DIA_ATIPICO
+    # Obtener horas dinámicamente desde los datos reales
+    horas = utils.obtener_rango_horas(df_f, tipo_dia)
 
     ocupacion_por_hora = {}
     entradas_por_hora = {}

@@ -1,7 +1,7 @@
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from datetime import datetime
-from generar_tablas.escribir_datos import escribir_datos_ocupacion, escribir_indicadores, escribir_oferta_ocupacion, escribir_oferta_llegadas, escribir_oferta_irt
+from generar_tablas.escribir_datos import escribir_datos_ocupacion, escribir_indicadores, escribir_oferta_ocupacion, escribir_oferta_llegadas, escribir_oferta_irt, escribir_llegadas_oferta_ratio
 import utils
 
 def generar_excel(zonas,df_autos,df_motos,df_parqueaderos, resultados, output_dir):
@@ -50,7 +50,7 @@ def generar_excel(zonas,df_autos,df_motos,df_parqueaderos, resultados, output_di
     
     # TABLAS OFERTA/LLEGADAS
     for zona, df_ol in resultados['tablas_oferta_llegadas'].items():
-        nombre = f'OL_{utils.limpiar_nombre(zona)[:20]}'
+        nombre = f'OvsL_{utils.limpiar_nombre(zona)[:20]}'
         ws = wb.create_sheet(nombre)
         escribir_oferta_llegadas(ws, df_ol, zona, header_fill, header_font, border, center)
     
@@ -60,6 +60,13 @@ def generar_excel(zonas,df_autos,df_motos,df_parqueaderos, resultados, output_di
         print(f"Creando hoja: {nombre} para zona: {zona}")
         ws = wb.create_sheet(nombre)
         escribir_oferta_irt(ws, df_irt, zona, header_fill, header_font, border, center)
+    
+    # TABLAS LLEGADAS/OFERTA
+    for zona, df_ratio in resultados['tablas_llegadas_oferta_ratio'].items():
+        nombre = f'LO_{utils.limpiar_nombre(zona)[:20]}'
+        print(f"Creando hoja: {nombre} para zona: {zona}")
+        ws = wb.create_sheet(nombre)
+        escribir_llegadas_oferta_ratio(ws, df_ratio, zona, header_fill, header_font, border, center)
     
     # DATOS OCUPACIÓN
     ws = wb.create_sheet('DATOS_OCUPACIÓN')

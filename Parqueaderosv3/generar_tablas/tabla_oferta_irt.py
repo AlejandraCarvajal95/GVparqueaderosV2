@@ -54,7 +54,8 @@ def calcular_entradas_totales(df, codigo_manzana, tipo_dia):
     
     # Obtener fechas únicas
     fechas = df_filtrado['DIA'].unique()
-    horas = utils.HORAS_DIA_TIPICO if tipo_dia == 'TIPICO' else utils.HORAS_DIA_ATIPICO
+    # Obtener horas dinámicamente desde los datos reales
+    horas = utils.obtener_rango_horas(df_filtrado, tipo_dia)
     
     entradas_por_hora = {}
     for hora in horas:

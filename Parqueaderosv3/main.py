@@ -3,6 +3,7 @@ from generar_informe.generar_informe import generar_informe
 from generar_tablas.tabla_oferta_ocupacion import generar_tabla_oferta_ocupacion
 from generar_tablas.tabla_oferta_llegadas import generar_tabla_oferta_llegadas
 from generar_tablas.tabla_oferta_irt import generar_tabla_oferta_irt
+from generar_tablas.tabla_llegadas_oferta_ratio import generar_tabla_llegadas_oferta_ratio
 import utils
 from generar_graficas.grafico_entradas_salidas import generar_grafica_entradas_salidas
 from generar_graficas.grafico_ocupacion import calcular_ocupacion_via, calcular_ocupacion_parqueadero, generar_grafica_ocupacion
@@ -51,7 +52,8 @@ if __name__ == "__main__":
         'parqueadero': {'autos': {}, 'motos': {}},
         'tablas_oferta_ocupacion': {},
         'tablas_oferta_llegadas': {},
-        'tablas_oferta_irt': {}
+        'tablas_oferta_irt': {},
+        'tablas_llegadas_oferta_ratio': {}
     }
    
     for zona in zonas:
@@ -109,6 +111,12 @@ if __name__ == "__main__":
                 resultados['tablas_oferta_irt'][zona] = tabla_irt
             else:
                 print("No se generó tabla IRT para zona:", zona)
+        
+        # Tabla llegadas/oferta ratio
+        if tiene_cap:
+            tabla_ratio = generar_tabla_llegadas_oferta_ratio(zona, df_capacidades_procesado, df_autos_procesado, df_motos_procesado)
+            if tabla_ratio is not None:
+                resultados['tablas_llegadas_oferta_ratio'][zona] = tabla_ratio
     
         # Parqueaderos Autos y Motos
         if df_parqueaderos_procesado is not None:

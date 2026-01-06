@@ -79,6 +79,50 @@ def escribir_oferta_llegadas(ws, df_ol, zona, header_fill, header_font, border, 
     for col in range(1, 10):
         ws.column_dimensions[get_column_letter(col)].width = 15
 
+def escribir_llegadas_oferta_ratio(ws, df_ratio, zona, header_fill, header_font, border, center):
+    """Escribe tabla llegadas/oferta."""
+    print(f"  Escribiendo {len(df_ratio)} filas de Llegadas/Oferta para zona {zona}")
+    ws['A1'] = f'Llegadas / Oferta - {zona}'
+    ws['A1'].font = Font(bold=True, size=12)
+    
+    headers = ['LADOS', 'OFERTA', '', 'LLEGADAS/OFERTA AUTOS', '', '', 'LLEGADAS/OFERTA MOTOS', '', '']
+    subheaders = ['', 'AUTOS', 'MOTOS', 'TÍPICO', 'SÁBADO', 'DOMINGO', 'TÍPICO', 'SÁBADO', 'DOMINGO']
+    
+    for col, h in enumerate(headers, 1):
+        cell = ws.cell(row=3, column=col, value=h)
+        cell.fill = header_fill
+        cell.font = header_font
+        cell.border = border
+        cell.alignment = center
+    
+    for col, h in enumerate(subheaders, 1):
+        cell = ws.cell(row=4, column=col, value=h)
+        cell.fill = header_fill
+        cell.font = header_font
+        cell.border = border
+        cell.alignment = center
+    
+    ws.merge_cells('B3:C3')
+    ws.merge_cells('D3:F3')
+    ws.merge_cells('G3:I3')
+    
+    row = 5
+    for _, data in df_ratio.iterrows():
+        for col, key in enumerate(['LADOS', 'OFERTA_AUTOS', 'OFERTA_MOTOS', 'LLEGADAS_OFERTA_AUTOS_TIPICO', 'LLEGADAS_OFERTA_AUTOS_SABADO', 'LLEGADAS_OFERTA_AUTOS_DOMINGO', 'LLEGADAS_OFERTA_MOTOS_TIPICO', 'LLEGADAS_OFERTA_MOTOS_SABADO', 'LLEGADAS_OFERTA_MOTOS_DOMINGO'], 1):
+            ws.cell(row=row, column=col, value=data[key]).border = border
+        row += 1
+    
+    # Promedios con fórmulas
+    ws.cell(row=row, column=1, value='PROMEDIO').font = Font(bold=True)
+    for col in range(4, 10):  # Solo promediar columnas de llegadas/oferta, no oferta
+        letter = get_column_letter(col)
+        ws.cell(row=row, column=col, value=f'=AVERAGE({letter}5:{letter}{row-1})')
+        ws.cell(row=row, column=col).font = Font(bold=True)
+        ws.cell(row=row, column=col).border = border
+    
+    for col in range(1, 10):
+        ws.column_dimensions[get_column_letter(col)].width = 15
+
 def escribir_oferta_irt(ws, df_irt, zona, header_fill, header_font, border, center):
     """Escribe tabla oferta/IRT."""
     print(f"  Escribiendo {len(df_irt)} filas de IRT para zona {zona}")

@@ -1,0 +1,198 @@
+================================================================================
+INFORME TÉCNICO - ANÁLISIS DE ESTACIONAMIENTO
+Fecha: 2026-01-05 22:17
+================================================================================
+
+1. DATOS DE ENTRADA
+----------------------------------------
+   Autos en vía: 12,956 registros, 6,497 placas únicas
+   Motos en vía: 6,727 registros, 3,364 placas únicas
+   Parqueaderos: 1,839 movimientos
+
+   Zonas: CENTENARIO, EL PEÑON, GRANADA, SAN ANTONIO, SAN FERNANDO (PARQUE DEL PERRO)
+
+2. METODOLOGÍA
+----------------------------------------
+   - Ocupación: Conteo de vehículos únicos por hora
+   - Entradas: Vehículos nuevos vs hora anterior
+   - Salidas: Vehículos que no continúan
+   - Valores promediados por tipo de día
+   - Típico: Lun-Vie (8-18h), Atípico: Sáb-Dom (11-18h)
+
+3. RESULTADOS POR ZONA
+----------------------------------------
+
+>>> CENTENARIO
+
+   AUTOS - TIPICO:
+      Ocupación Máxima: 30.0
+      Oferta Real Total: 210
+      Ocupación Media: 8.10%
+      Duración Media (Dm): 2.195 hrs
+      Índice de Rotación Total (IRt): 1.219
+      Índice de Rotación Horario: 0.203
+      Tasa de Llegada: 0.4
+      Tasa de Salida: 0.3
+      Reserva de estacionamiento: 180.0
+
+   AUTOS - SABADO:
+      Ocupación Máxima: 27.0
+      Oferta Real Total: 210
+      Ocupación Media: 6.11%
+      Duración Media (Dm): 1.470 hrs
+      Índice de Rotación Total (IRt): 0.314
+      Índice de Rotación Horario: 0.052
+      Tasa de Llegada: 0.3
+      Tasa de Salida: 0.3
+      Reserva de estacionamiento: 183.0
+
+   AUTOS - DOMINGO:
+      Ocupación Máxima: 31.0
+      Oferta Real Total: 210
+      Ocupación Media: 4.29%
+      Duración Media (Dm): 1.093 hrs
+      Índice de Rotación Total (IRt): 0.257
+      Índice de Rotación Horario: 0.043
+      Tasa de Llegada: 0.2
+      Tasa de Salida: 0.2
+      Reserva de estacionamiento: 179.0
+
+>>> EL PEÑON
+
+   AUTOS - TIPICO:
+      Ocupación Máxima: 77.0
+      Oferta Real Total: 366
+      Ocupación Media: 14.96%
+      Duración Media (Dm): 2.057 hrs
+      Índice de Rotación Total (IRt): 1.956
+      Índice de Rotación Horario: 0.326
+      Tasa de Llegada: 0.7
+      Tasa de Salida: 0.6
+      Reserva de estacionamiento: 289.0
+
+   AUTOS - SABADO:
+      Ocupación Máxima: 198.0
+      Oferta Real Total: 366
+      Ocupación Media: 44.44%
+      Duración Media (Dm): 1.664 hrs
+      Índice de Rotación Total (IRt): 1.943
+      Índice de Rotación Horario: 0.324
+      Tasa de Llegada: 1.8
+      Tasa de Salida: 1.4
+      Reserva de estacionamiento: 168.0
+
+   AUTOS - DOMINGO:
+      Ocupación Máxima: 166.0
+      Oferta Real Total: 366
+      Ocupación Media: 32.06%
+      Duración Media (Dm): 1.480 hrs
+      Índice de Rotación Total (IRt): 1.508
+      Índice de Rotación Horario: 0.251
+      Tasa de Llegada: 1.4
+      Tasa de Salida: 1.1
+      Reserva de estacionamiento: 200.0
+
+>>> GRANADA
+
+   AUTOS - TIPICO:
+      Ocupación Máxima: 140.0
+      Oferta Real Total: 992
+      Ocupación Media: 9.14%
+      Duración Media (Dm): 2.218 hrs
+      Índice de Rotación Total (IRt): 1.584
+      Índice de Rotación Horario: 0.264
+      Tasa de Llegada: 0.4
+      Tasa de Salida: 0.3
+      Reserva de estacionamiento: 852.0
+
+   AUTOS - SABADO:
+      Ocupación Máxima: 75.0
+      Oferta Real Total: 992
+      Ocupación Media: 1.26%
+      Duración Media (Dm): 1.000 hrs
+      Índice de Rotación Total (IRt): 0.076
+      Índice de Rotación Horario: 0.013
+      Tasa de Llegada: 0.1
+      Tasa de Salida: 0.1
+      Reserva de estacionamiento: 917.0
+
+>>> SAN ANTONIO
+
+   AUTOS - TIPICO:
+      Ocupación Máxima: 67.0
+      Oferta Real Total: 717
+      Ocupación Media: 7.86%
+      Duración Media (Dm): 2.636 hrs
+      Índice de Rotación Total (IRt): 0.724
+      Índice de Rotación Horario: 0.121
+      Tasa de Llegada: 0.3
+      Tasa de Salida: 0.2
+      Reserva de estacionamiento: 650.0
+
+   AUTOS - SABADO:
+      Ocupación Máxima: 5.0
+      Oferta Real Total: 717
+      Ocupación Media: 0.42%
+      Duración Media (Dm): 1.125 hrs
+      Índice de Rotación Total (IRt): 0.022
+      Índice de Rotación Horario: 0.004
+      Tasa de Llegada: 0.0
+      Tasa de Salida: 0.0
+      Reserva de estacionamiento: 712.0
+
+   AUTOS - DOMINGO:
+      Ocupación Máxima: 3.0
+      Oferta Real Total: 717
+      Ocupación Media: 0.16%
+      Duración Media (Dm): 1.600 hrs
+      Índice de Rotación Total (IRt): 0.007
+      Índice de Rotación Horario: 0.001
+      Tasa de Llegada: 0.0
+      Tasa de Salida: 0.0
+      Reserva de estacionamiento: 714.0
+
+>>> SAN FERNANDO (PARQUE DEL PERRO)
+
+   AUTOS - TIPICO:
+      Ocupación Máxima: 393.0
+      Oferta Real Total: 801
+      Ocupación Media: 28.03%
+      Duración Media (Dm): 2.508 hrs
+      Índice de Rotación Total (IRt): 1.519
+      Índice de Rotación Horario: 0.253
+      Tasa de Llegada: 1.2
+      Tasa de Salida: 1.0
+      Reserva de estacionamiento: 408.0
+
+   AUTOS - SABADO:
+      Ocupación Máxima: 212.0
+      Oferta Real Total: 801
+      Ocupación Media: 18.64%
+      Duración Media (Dm): 1.597 hrs
+      Índice de Rotación Total (IRt): 0.908
+      Índice de Rotación Horario: 0.151
+      Tasa de Llegada: 0.9
+      Tasa de Salida: 0.7
+      Reserva de estacionamiento: 589.0
+
+   AUTOS - DOMINGO:
+      Ocupación Máxima: 125.0
+      Oferta Real Total: 801
+      Ocupación Media: 12.42%
+      Duración Media (Dm): 1.551 hrs
+      Índice de Rotación Total (IRt): 0.592
+      Índice de Rotación Horario: 0.099
+      Tasa de Llegada: 0.5
+      Tasa de Salida: 0.4
+      Reserva de estacionamiento: 676.0
+
+4. ARCHIVOS GENERADOS
+----------------------------------------
+   - Excel: analisis_estacionamiento.xlsx
+   - Gráficas: 90 archivos HTML
+
+5. OBSERVACIONES
+----------------------------------------
+   No se detectó saturación crítica.
+
+================================================================================

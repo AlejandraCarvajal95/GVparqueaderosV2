@@ -6,32 +6,49 @@ import numpy as np
 
 def calcular_ocupacion_via(df_procesado, df_capacidades, zona, tipo_dia, tipo_vehiculo):
 
-    # Crear columna TIPO_VEHICULO_CALC si no existe
+    # Crear columna TIPO_VEHICULO_CALC si no existe)
     if 'TIPO_VEHICULO_CALC' not in df_procesado.columns:
         df_procesado['TIPO_VEHICULO_CALC'] = df_procesado['PLACA'].apply(utils.clasificar_vehiculo_placa)
     
     df_f = df_procesado[(df_procesado['ZONA'] == zona) & (df_procesado['TIPO_DIA_CALC'] == tipo_dia) & (df_procesado['TIPO_VEHICULO_CALC'] == tipo_vehiculo)].copy()
+   
     if len(df_f) == 0:
             return None
     
+    #print("Data filtered for calcular_ocupacion_via:")
+   # print (df_f.head())
+    
     fechas = df_f['DIA'].unique()
+    #print(f"Fechas unicas encontradas: {fechas}")
     horas = utils.HORAS_DIA_TIPICO if tipo_dia == 'TIPICO' else utils.HORAS_DIA_ATIPICO
-
+    #print (f"Horas a procesar: {horas}")
     ocupacion_por_hora = {}
     entradas_por_hora = {}
     salidas_por_hora = {}
 
     for hora in horas:
         ocups, ents, sals = [], [], []
-        ocups = []
         for fecha in fechas:
+            # Filtrar por fecha
             df_fecha = df_f[df_f['DIA'] == fecha]
-            # Extraer la hora del string 'HH:MM' y comparar con el entero
-            placas = set(df_fecha[df_fecha['HORA'].str[:2].astype(int) == hora]['PLACA'].dropna().unique())
+            
+            # Filtrar por hora (ahora es entero)
+            placas = set(df_fecha[df_fecha['HORA'] == hora]['PLACA'].dropna().unique())
             ocups.append(len(placas))
-
+            
+            # Debug detallado por fecha
+            #horas_debug = [12, 13, 14, 15, 16, 17]
+            #if hora in horas_debug and zona == "CENTENARIO" and tipo_dia == "TIPICO" and tipo_vehiculo == "MOTO":
+                #print(f"  Fecha {fecha}: {len(placas)} vehículos")
+        
+        # Solo guardar dato_debug cuando se cumple la condición
+        #if hora in horas_debug and zona == "CENTENARIO" and tipo_dia == "TIPICO" and tipo_vehiculo == "MOTO":
+            #dato_debug = {"info": f"ocupaciones para la hora {hora}, la zona {zona}, el tipo de dia {tipo_dia}: {ocups}"}
+            #promedio = np.mean(ocups) if ocups else 0
+            #print(f">>> DEBUG Hora {hora}: ocupaciones = {ocups}, PROMEDIO = {promedio:.2f}\n")
+         
             if hora > min(horas):
-                placas_ant = set(df_fecha[df_fecha['HORA'].str[:2].astype(int) == hora - 1]['PLACA'].dropna().unique())
+                placas_ant = set(df_fecha[df_fecha['HORA'] == hora - 1]['PLACA'].dropna().unique())
                 ents.append(len(placas - placas_ant))
                 sals.append(len(placas_ant - placas))
             else:
@@ -42,36 +59,35 @@ def calcular_ocupacion_via(df_procesado, df_capacidades, zona, tipo_dia, tipo_ve
         entradas_por_hora[hora] = np.mean(ents) if ents else 0
         salidas_por_hora[hora] = np.mean(sals) if sals else 0
 
-                # Capacidad
-        capacidad = 0
-        if  df_capacidades is not None:
-            cap_zona = df_capacidades[df_capacidades['ZONA'] == zona]
-            col = 'CAPACIDAD_AUTOS' if tipo_vehiculo == 'AUTO' else 'CAPACIDAD_MOTOS'
-            capacidad = cap_zona[col].sum() if col in cap_zona.columns else 0
-           
-      
-        # Indicadores
-        ocup_max = max(ocupacion_por_hora.values()) if ocupacion_por_hora else 0
-        ocup_media_pct = np.mean([o/capacidad*100 if capacidad > 0 else 0 for o in ocupacion_por_hora.values()])
+    # Capacidad
+    capacidad = 0
+    if  df_capacidades is not None:
+        cap_zona = df_capacidades[df_capacidades['ZONA'] == zona]
+        col = 'CAPACIDAD_AUTOS' if tipo_vehiculo == 'AUTO' else 'CAPACIDAD_MOTOS'
+        capacidad = cap_zona[col].sum() if col in cap_zona.columns else 0
         
-        # Duración media
-        duraciones = []
-        for fecha in fechas:
-            df_fecha = df_f[df_f['DIA'] == fecha]
-            for placa in df_fecha['PLACA'].unique():
-                horas_v = sorted(df_fecha[df_fecha['PLACA'] == placa]['HORA'].unique())
-                if horas_v:
-                    # Convertir strings 'HH:MM' a enteros (solo la hora)
-                    horas_int = [int(h.split(':')[0]) for h in horas_v]
-                    duraciones.append(max(horas_int) - min(horas_int) + 1)
-        dur_media = np.mean(duraciones) if duraciones else 0
-        
-        total_veh = df_f['PLACA'].nunique()
-        irt = total_veh / capacidad if capacidad > 0 else 0
-        irh = irt / len(horas) if horas else 0
-        
-        total_ent = sum(entradas_por_hora.values())
-        total_sal = sum(salidas_por_hora.values())
+    
+    # Indicadores
+    ocup_max = max(ocupacion_por_hora.values()) if ocupacion_por_hora else 0
+    ocup_media_pct = np.mean([o/capacidad*100 if capacidad > 0 else 0 for o in ocupacion_por_hora.values()])
+
+    # Duración media
+    duraciones = []
+    for fecha in fechas:
+        df_fecha = df_f[df_f['DIA'] == fecha]
+        for placa in df_fecha['PLACA'].unique():
+            horas_v = sorted(df_fecha[df_fecha['PLACA'] == placa]['HORA'].unique())
+            if horas_v:
+                # HORA ya es entero, calcular duración directamente
+                duraciones.append(max(horas_v) - min(horas_v) + 1)
+    dur_media = np.mean(duraciones) if duraciones else 0
+    
+    total_veh = df_f['PLACA'].nunique()
+    irt = total_veh / capacidad if capacidad > 0 else 0
+    irh = irt / len(horas) if horas else 0
+    
+    total_ent = sum(entradas_por_hora.values())
+    total_sal = sum(salidas_por_hora.values())
 
     #ocupacion_hora = pd.DataFrame(list(ocupacion_por_hora.items()), columns=['HORA', 'OCUPACION'])
     resultado =  {
@@ -96,7 +112,7 @@ def calcular_ocupacion_via(df_procesado, df_capacidades, zona, tipo_dia, tipo_ve
     return resultado
     #return ocupacion_hora
 
-def calcular_ocupacion_parqueadero(zona, tipo_dia, tipo_vehiculo, df_parqueaderos):
+def calcular_ocupacion_parqueadero(df_parqueaderos, zona, tipo_dia, tipo_vehiculo):
     if df_parqueaderos is None:
         return None
     
@@ -107,7 +123,7 @@ def calcular_ocupacion_parqueadero(zona, tipo_dia, tipo_vehiculo, df_parqueadero
     ].copy()
     
     if len(df_f) == 0:
-            return None
+        return None
     
     fechas = df_f['DIA'].unique()
     horas = utils.HORAS_DIA_TIPICO if tipo_dia == 'TIPICO' else utils.HORAS_DIA_ATIPICO
@@ -120,12 +136,12 @@ def calcular_ocupacion_parqueadero(zona, tipo_dia, tipo_vehiculo, df_parqueadero
         ocups, ents, sals = [], [], []
         for fecha in fechas:
             df_fecha = df_f[df_f['DIA'] == fecha]
-            ent_acum = len(df_fecha[(df_fecha['Tipo(Entrada/Salida)'] == 'ENTRADA') & (df_fecha['HORA'] <= hora)])
-            sal_acum = len(df_fecha[(df_fecha['Tipo(Entrada/Salida)'] == 'SALIDA') & (df_fecha['HORA'] <= hora)])
+            ent_acum = len(df_fecha[(df_fecha['TIPO_ENT_SAL'] == 'ENTRADA') & (df_fecha['HORA'] <= hora)])
+            sal_acum = len(df_fecha[(df_fecha['TIPO_ENT_SAL'] == 'SALIDA') & (df_fecha['HORA'] <= hora)])
             ocups.append(max(0, ent_acum - sal_acum))
             
-            ent_h = len(df_fecha[(df_fecha['Tipo(Entrada/Salida)'] == 'ENTRADA') & (df_fecha['HORA'] == hora)])
-            sal_h = len(df_fecha[(df_fecha['Tipo(Entrada/Salida)'] == 'SALIDA') & (df_fecha['HORA'] == hora)])
+            ent_h = len(df_fecha[(df_fecha['TIPO_ENT_SAL'] == 'ENTRADA') & (df_fecha['HORA'] == hora)])
+            sal_h = len(df_fecha[(df_fecha['TIPO_ENT_SAL'] == 'SALIDA') & (df_fecha['HORA'] == hora)])
             ents.append(ent_h)
             sals.append(sal_h)
         
@@ -135,13 +151,13 @@ def calcular_ocupacion_parqueadero(zona, tipo_dia, tipo_vehiculo, df_parqueadero
         
     # Capacidad
     capacidad = 0
-    parqueaderos_unicos = [p for p in df_f['Parqueadero'].unique() if pd.notna(p)]
+    parqueaderos_unicos = [p for p in df_f['PARQUEADERO'].unique() if pd.notna(p)]
     for parq in parqueaderos_unicos:
-        parq_df = df_f[df_f['Parqueadero'] == parq]
+        parq_df = df_f[df_f['PARQUEADERO'] == parq]
         if len(parq_df) == 0:
             continue
         parq_data = parq_df.iloc[0]
-        col = 'cap_capacidad_autos' if tipo_vehiculo == 'AUTO' else 'cap_capacidad_motos'
+        col = 'CAPACIDAD_AUTOS' if tipo_vehiculo == 'AUTO' else 'CAPACIDAD_MOTOS'
         cap = parq_data.get(col, 0)
         if pd.notna(cap):
             try:
@@ -161,6 +177,14 @@ def generar_grafica_ocupacion(datos, zona, tipo_dia, tipo_vehiculo, tipo_est, fi
 
     horas = list(datos['ocupacion_por_hora'].keys())
     ocupacion = list(datos['ocupacion_por_hora'].values())
+
+    # Debug: Imprimir ocupación de hora 12
+    if zona == "CENTENARIO" and tipo_dia == "TIPICO" and tipo_vehiculo == "MOTO" and tipo_est == "En Vía":
+        print("Ocupacion en la hora 12 de CENTENARIO, TIPICO, MOTO, En Via:")
+        print(f"  Valor: {datos['ocupacion_por_hora'].get(12, 'No data for hour 12')}")
+        print(f"  Todas las horas: {horas}")
+        print(f"  Todas las ocupaciones: {ocupacion}")
+
     
     # Crear gráfico de barras con Plotly
     fig = go.Figure()

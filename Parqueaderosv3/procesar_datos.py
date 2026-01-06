@@ -3,10 +3,10 @@ from pathlib import Path
 import pandas as pd
 import utils
 
-def cargar_estacionamientosDB():
+def cargar_estacionamientosDB(path):
 
     try:
-     excel_path = Path('datos_entrada/BD_10_12_25_estacionamiento.xlsx')
+     excel_path = Path(path)
      df_est_carros = pd.read_excel(excel_path, sheet_name=0)  # Primera hoja: carros
      df_est_motos = pd.read_excel(excel_path, sheet_name=1)   # Segunda hoja: motos
      df_est_parqueaderos = pd.read_excel(excel_path, sheet_name=2)  # Tercera hoja: parqueaderos
@@ -14,18 +14,18 @@ def cargar_estacionamientosDB():
      # Crear una copia de cada uno
      df_carros_cargado = df_est_carros[["plate", "timestamp", "codigo", "tipo_dia", "sector"]].copy()
      df_motos_cargado = df_est_motos[["HORA", "LADO MANZANA", "PLACA", "sector", "tipo_dia"]].copy()
-     df_parqueaderos_cargado = df_est_parqueaderos[["Placa","Placa_Mayus", "Tipo(Entrada/Salida)", "FechaHora", "tipo_dia", "sector", "cap_capacidad_autos", "cap_capacidad_motos"]].copy()
-     
+     df_parqueaderos_cargado = df_est_parqueaderos[["Placa","Placa_Mayus", "Tipo(Entrada/Salida)", "FechaHora", "tipo_dia", "sector", "cap_capacidad_autos", "cap_capacidad_motos", "Parqueadero"]].copy()
+
      return df_carros_cargado, df_motos_cargado, df_parqueaderos_cargado
      
     except Exception as e:
         print(f"Error al cargar el archivo: {e}")
         raise
 
-def cargar_capacidadesDB():
+def cargar_capacidadesDB(path):
    
     try:
-     excel_path = Path('datos_entrada/20251211_BD_capacidades.xlsx')
+     excel_path = Path(path)
      df_capacidades = pd.read_excel(excel_path)
      return df_capacidades
      
@@ -38,7 +38,8 @@ def procesar_autos(df_autos):
     # Convertir TIMESTAMP a datetime y crear columnas DIA y HORA
     df_autos["timestamp"] = pd.to_datetime(df_autos["timestamp"])
     df_autos["DIA"] = df_autos["timestamp"].dt.date
-    df_autos["HORA"] = df_autos["timestamp"].dt.strftime("%H:%M")
+    #df_autos["HORA_COMPLETA"] = df_autos["timestamp"].dt.strftime("%H:%M")  # Para referencia
+    df_autos["HORA"] = df_autos["timestamp"].dt.hour  # Para cálculos
 
     #tipo de dia
     df_autos['DIA_SEMANA'] = df_autos['timestamp'].dt.dayofweek
@@ -52,9 +53,11 @@ def procesar_autos(df_autos):
 def procesar_motos(df_motos):
 
     # Convertir TIMESTAMP a datetime y crear columnas DIA y HORA
-    df_motos["HORA"] = pd.to_datetime(df_motos["HORA"])
-    df_motos["DIA"] = df_motos["HORA"].dt.date
-    df_motos["HORA"] = df_motos["HORA"].dt.strftime("%H:%M")
+    df_motos["timestamp_temp"] = pd.to_datetime(df_motos["HORA"])
+    df_motos["DIA"] = df_motos["timestamp_temp"].dt.date
+    df_motos["HORA_COMPLETA"] = df_motos["timestamp_temp"].dt.strftime("%H:%M")  # Para referencia
+    df_motos["HORA"] = df_motos["timestamp_temp"].dt.hour  # Para cálculos como entero (maneja NaN automáticamente)
+
 
     #tipo de dia
     df_motos['DIA_SEMANA'] = pd.to_datetime(df_motos["DIA"]).dt.dayofweek
@@ -71,7 +74,8 @@ def procesar_parqueaderos(df_parqueaderos):
     # Convertir TIMESTAMP a datetime y crear columnas DIA y HORA
     df_parqueaderos["FechaHora"] = pd.to_datetime(df_parqueaderos["FechaHora"])
     df_parqueaderos["DIA"] = df_parqueaderos["FechaHora"].dt.date
-    df_parqueaderos["HORA"] = df_parqueaderos["FechaHora"].dt.strftime("%H:%M")
+    df_parqueaderos["HORA_COMPLETA"] = df_parqueaderos["FechaHora"].dt.strftime("%H:%M")  # Para referencia
+    df_parqueaderos["HORA"] = df_parqueaderos["FechaHora"].dt.hour  # Para cálculos
 
     #tipo de dia
     df_parqueaderos['DIA_SEMANA'] = df_parqueaderos['FechaHora'].dt.dayofweek
@@ -81,8 +85,8 @@ def procesar_parqueaderos(df_parqueaderos):
     df_parqueaderos['TIPO_VEHICULO'] = df_parqueaderos['Placa'].apply(utils.clasificar_vehiculo_placa)
 
     # Renombrar y reordenar columnas 
-    df_parqueaderos.rename(columns={"Placa_Mayus": "PLACA", "Tipo(Entrada/Salida)": "TIPO_ENT_SAL", "tipo_dia": "TIPO_DIA", "sector": "ZONA", "cap_capacidad_autos": "CAPACIDAD_AUTOS", "cap_capacidad_motos": "CAPACIDAD_MOTOS"}, inplace=True)
-    df_parqueaderos_procesado = df_parqueaderos[["DIA", "HORA", "PLACA", "TIPO_DIA", "ZONA",  "TIPO_ENT_SAL",  "CAPACIDAD_AUTOS", "CAPACIDAD_MOTOS", "TIPO_VEHICULO","DIA_SEMANA", "TIPO_DIA_CALC"]].copy()
+    df_parqueaderos.rename(columns={"Placa_Mayus": "PLACA", "Tipo(Entrada/Salida)": "TIPO_ENT_SAL", "Parqueadero": "PARQUEADERO", "tipo_dia": "TIPO_DIA", "sector": "ZONA", "cap_capacidad_autos": "CAPACIDAD_AUTOS", "cap_capacidad_motos": "CAPACIDAD_MOTOS"}, inplace=True)
+    df_parqueaderos_procesado = df_parqueaderos[["DIA", "HORA", "PLACA", "TIPO_DIA", "ZONA",  "TIPO_ENT_SAL",  "CAPACIDAD_AUTOS", "CAPACIDAD_MOTOS", "TIPO_VEHICULO","DIA_SEMANA", "TIPO_DIA_CALC", "PARQUEADERO"]].copy()
 
     return df_parqueaderos_procesado
  

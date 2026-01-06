@@ -105,7 +105,7 @@ if __name__ == "__main__":
                         generar_grafica_entradas_salidas(datos, zona, tipo_dia, tipo_veh, 'Parqueadero', graficas_dir / f"{base}_entradas_salidas.png")
                         if datos['capacidad'] > 0:
                             generar_grafica_oferta_ocupacion(datos, zona, tipo_dia, tipo_veh, 'Parqueadero', graficas_dir / f"{base}_oferta.png")
-
+    # Generar archivo Excel con resultados
     generar_excel(zonas,df_autos_procesado,df_motos_procesado,df_parqueaderos_procesado, resultados, output_dir)
     generar_informe(df_autos_procesado, df_motos_procesado, df_parqueaderos_procesado, zonas, resultados, output_dir, graficas_dir)
     print ("Análisis completado. Resultados guardados en 'datos_salida'.")

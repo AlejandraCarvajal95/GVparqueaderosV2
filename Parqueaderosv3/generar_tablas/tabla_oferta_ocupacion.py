@@ -1,7 +1,7 @@
 import pandas as pd
 
-def generar_tabla_oferta_demanda(zona, df_capacidades, df_autos, df_motos):
-    """Genera tabla de oferta y demanda por lado de manzana."""
+def generar_tabla_oferta_ocupacion(zona, df_capacidades, df_autos, df_motos):
+    """Genera tabla de oferta y ocupacion por lado de manzana."""
     if df_capacidades is None:
         return None
     

@@ -37,12 +37,12 @@ def escribir_indicadores(ws, datos_dict, titulo, header_fill, header_font, borde
     ws.column_dimensions['A'].width = 35
     ws.column_dimensions['B'].width = 15
 
-def escribir_oferta_demanda(ws, df_od, zona, header_fill, header_font, border, center):
-    """Escribe tabla oferta/demanda."""
-    ws['A1'] = f'Oferta y Demanda - {zona}'
+def escribir_oferta_ocupacion(ws, df_oo, zona, header_fill, header_font, border, center):
+    """Escribe tabla oferta/ocupación."""
+    ws['A1'] = f'Oferta y Ocupación - {zona}'
     ws['A1'].font = Font(bold=True, size=12)
     
-    headers = ['LADOS', 'OFERTA', '', 'DEMANDA AUTOS', '', '', 'DEMANDA MOTOS', '', '']
+    headers = ['LADOS', 'OFERTA', '', 'OCUPACIÓN AUTOS', '', '', 'OCUPACIÓN MOTOS', '', '']
     subheaders = ['', 'AUTOS', 'MOTOS', 'TÍPICO', 'SÁBADO', 'DOMINGO', 'TÍPICO', 'SÁBADO', 'DOMINGO']
     
     for col, h in enumerate(headers, 1):
@@ -64,7 +64,7 @@ def escribir_oferta_demanda(ws, df_od, zona, header_fill, header_font, border, c
     ws.merge_cells('G3:I3')
     
     row = 5
-    for _, data in df_od.iterrows():
+    for _, data in df_oo.iterrows():
         for col, key in enumerate(['LADOS', 'OFERTA_AUTOS', 'OFERTA_MOTOS', 'AUTOS_TIPICO', 'AUTOS_SABADO', 'AUTOS_DOMINGO', 'MOTOS_TIPICO', 'MOTOS_SABADO', 'MOTOS_DOMINGO'], 1):
             ws.cell(row=row, column=col, value=data[key]).border = border
         row += 1

@@ -1,6 +1,6 @@
 from pathlib import Path
 from generar_tablas.generar_informe.generar_informe import generar_informe
-from generar_tablas.tabla_oferta_demanda import generar_tabla_oferta_demanda
+from generar_tablas.tabla_oferta_ocupacion import generar_tabla_oferta_ocupacion
 import utils
 from generar_graficas.grafico_entradas_salidas import generar_grafica_entradas_salidas
 from generar_graficas.grafico_ocupacion import calcular_ocupacion_via, calcular_ocupacion_parqueadero, generar_grafica_ocupacion
@@ -47,7 +47,7 @@ if __name__ == "__main__":
     resultados = {
         'via': {'autos': {}, 'motos': {}},
         'parqueadero': {'autos': {}, 'motos': {}},
-        'tablas_oferta_demanda': {}
+        'tablas_oferta_ocupacion': {}
     }
    
     for zona in zonas:
@@ -84,11 +84,11 @@ if __name__ == "__main__":
                     if tiene_cap and datos['capacidad'] > 0:
                         generar_grafica_oferta_ocupacion(datos, zona, tipo_dia, 'MOTO', 'En Vía', graficas_dir / f"{base}_oferta.png")
         
-        # Tabla oferta/demanda
+        # Tabla oferta/ocupacion
         if tiene_cap:
-            tabla = generar_tabla_oferta_demanda(zona, df_capacidades_procesado, df_autos_procesado, df_motos_procesado)
+            tabla = generar_tabla_oferta_ocupacion(zona, df_capacidades_procesado, df_autos_procesado, df_motos_procesado)
             if tabla is not None:
-                resultados['tablas_oferta_demanda'][zona] = tabla
+                resultados['tablas_oferta_ocupacion'][zona] = tabla
                     
         # Parqueaderos Autos y Motos
         if df_parqueaderos_procesado is not None:

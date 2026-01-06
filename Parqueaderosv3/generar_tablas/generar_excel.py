@@ -1,7 +1,7 @@
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from datetime import datetime
-from generar_tablas.escribir_datos import escribir_datos_ocupacion, escribir_indicadores, escribir_oferta_demanda
+from generar_tablas.escribir_datos import escribir_datos_ocupacion, escribir_indicadores, escribir_oferta_ocupacion
 import utils
 
 def generar_excel(zonas,df_autos,df_motos,df_parqueaderos, resultados, output_dir):
@@ -42,14 +42,14 @@ def generar_excel(zonas,df_autos,df_motos,df_parqueaderos, resultados, output_di
         ws = wb.create_sheet('IND_VIA_MOTOS')
         escribir_indicadores(ws, resultados['via']['motos'], 'INDICADORES - MOTOS EN VÍA', header_fill, header_font, border, center)
     
-    # TABLAS OFERTA/DEMANDA
-    for zona, df_od in resultados['tablas_oferta_demanda'].items():
-        nombre = f'OD_{utils.limpiar_nombre(zona)[:20]}'
+    # TABLAS OFERTA/OCUPACION
+    for zona, df_oo in resultados['tablas_oferta_ocupacion'].items():
+        nombre = f'OO_{utils.limpiar_nombre(zona)[:20]}'
         ws = wb.create_sheet(nombre)
-        escribir_oferta_demanda(ws, df_od, zona, header_fill, header_font, border, center)
+        escribir_oferta_ocupacion(ws, df_oo, zona, header_fill, header_font, border, center)
     
     # DATOS OCUPACIÓN
-    ws = wb.create_sheet('DATOS_OCUPACION')
+    ws = wb.create_sheet('DATOS_OCUPACIÓN')
     escribir_datos_ocupacion(ws, header_fill, header_font, resultados)
     
     wb.save(output_dir / 'analisis_estacionamiento.xlsx')

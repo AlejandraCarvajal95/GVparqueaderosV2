@@ -1,75 +1,104 @@
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from datetime import datetime
-from generar_tablas.escribir_datos import escribir_datos_ocupacion, escribir_indicadores, escribir_oferta_ocupacion, escribir_oferta_llegadas, escribir_oferta_irt, escribir_llegadas_oferta_ratio
+from generar_tablas.escribir_datos import escribir_datos_ocupacion, escribir_indicadores, escribir_oferta_ocupacion, escribir_oferta_llegadas, escribir_oferta_irt, escribir_llegadas_oferta_ratio, escribir_duraciones, escribir_datos_ocupacion_por_tipo, escribir_duraciones_por_tipo
 import utils
 
 def generar_excel(zonas,df_autos,df_motos,df_parqueaderos, resultados, output_dir):
-    """Genera archivo Excel con resultados."""
-    wb = Workbook()
+    """Genera múltiples archivos Excel con resultados."""
+    
+    # Crear carpeta para los archivos Excel
+    excel_dir = output_dir / 'analisis_estacionamiento'
+    excel_dir.mkdir(exist_ok=True)
     
     header_fill = PatternFill(start_color=utils.COLORES['header'], end_color=utils.COLORES['header'], fill_type='solid')
     header_font = Font(bold=True, color=utils.COLORES['header_font'])
     border = Border(left=Side(style='thin'), right=Side(style='thin'), top=Side(style='thin'), bottom=Side(style='thin'))
     center = Alignment(horizontal='center', vertical='center')
     
-    del wb['Sheet']
+    # 1. EXCEL DE INDICADORES
+    if resultados['via']['autos'] or resultados['via']['motos']:
+        wb_ind = Workbook()
+        del wb_ind['Sheet']
+        
+        if resultados['via']['autos']:
+            ws = wb_ind.create_sheet('IND_VIA_AUTOS')
+            escribir_indicadores(ws, resultados['via']['autos'], 'INDICADORES - AUTOS EN VÍA', header_fill, header_font, border, center)
+        
+        if resultados['via']['motos']:
+            ws = wb_ind.create_sheet('IND_VIA_MOTOS')
+            escribir_indicadores(ws, resultados['via']['motos'], 'INDICADORES - MOTOS EN VÍA', header_fill, header_font, border, center)
+        
+        wb_ind.save(excel_dir / 'indicadores.xlsx')
     
-    # RESUMEN
-    ws = wb.create_sheet('RESUMEN')
-    ws['A1'] = 'ANÁLISIS DE ESTACIONAMIENTO'
-    ws['A1'].font = Font(bold=True, size=14)
-    ws['A3'] = f'Fecha: {datetime.now().strftime("%Y-%m-%d %H:%M")}'
-    ws['A4'] = f'Zonas: {", ".join(zonas)}'
+    # 2. EXCEL DE OFERTA Y OCUPACIÓN
+    if resultados['tablas_oferta_ocupacion']:
+        wb_oo = Workbook()
+        del wb_oo['Sheet']
+        
+        for zona, df_oo in resultados['tablas_oferta_ocupacion'].items():
+            nombre = f'{utils.limpiar_nombre(zona)[:30]}'
+            ws = wb_oo.create_sheet(nombre)
+            escribir_oferta_ocupacion(ws, df_oo, zona, header_fill, header_font, border, center)
+        
+        wb_oo.save(excel_dir / 'oferta_ocupacion.xlsx')
     
-    row = 6
-    if df_autos is not None:
-        ws[f'A{row}'] = f'Autos en vía: {len(df_autos):,} registros'
-        row += 1
-    if df_motos is not None:
-        ws[f'A{row}'] = f'Motos en vía: {len(df_motos):,} registros'
-        row += 1
-    if df_parqueaderos is not None:
-        ws[f'A{row}'] = f'Parqueaderos: {len(df_parqueaderos):,} registros'
+    # 3. EXCEL DE OFERTA Y LLEGADAS
+    if resultados['tablas_oferta_llegadas']:
+        wb_ol = Workbook()
+        del wb_ol['Sheet']
+        
+        for zona, df_ol in resultados['tablas_oferta_llegadas'].items():
+            nombre = f'{utils.limpiar_nombre(zona)[:30]}'
+            ws = wb_ol.create_sheet(nombre)
+            escribir_oferta_llegadas(ws, df_ol, zona, header_fill, header_font, border, center)
+        
+        wb_ol.save(excel_dir / 'oferta_llegadas.xlsx')
     
-    # INDICADORES VÍA - AUTOS
-    if resultados['via']['autos']:
-        ws = wb.create_sheet('IND_VIA_AUTOS')
-        escribir_indicadores(ws, resultados['via']['autos'], 'INDICADORES - AUTOS EN VÍA', header_fill, header_font, border, center)
+    # 4. EXCEL DE IRT
+    if resultados['tablas_oferta_irt']:
+        wb_irt = Workbook()
+        del wb_irt['Sheet']
+        
+        for zona, df_irt in resultados['tablas_oferta_irt'].items():
+            nombre = f'{utils.limpiar_nombre(zona)[:30]}'
+            ws = wb_irt.create_sheet(nombre)
+            escribir_oferta_irt(ws, df_irt, zona, header_fill, header_font, border, center)
+        
+        wb_irt.save(excel_dir / 'irt.xlsx')
     
-    # INDICADORES VÍA - MOTOS
-    if resultados['via']['motos']:
-        ws = wb.create_sheet('IND_VIA_MOTOS')
-        escribir_indicadores(ws, resultados['via']['motos'], 'INDICADORES - MOTOS EN VÍA', header_fill, header_font, border, center)
+    # 5. EXCEL DE LLEGADAS/OFERTA
+    if resultados['tablas_llegadas_oferta_ratio']:
+        wb_lo = Workbook()
+        del wb_lo['Sheet']
+        
+        for zona, df_ratio in resultados['tablas_llegadas_oferta_ratio'].items():
+            nombre = f'{utils.limpiar_nombre(zona)[:30]}'
+            ws = wb_lo.create_sheet(nombre)
+            escribir_llegadas_oferta_ratio(ws, df_ratio, zona, header_fill, header_font, border, center)
+        
+        wb_lo.save(excel_dir / 'llegadas_oferta.xlsx')
     
-    # TABLAS OFERTA/OCUPACION
-    for zona, df_oo in resultados['tablas_oferta_ocupacion'].items():
-        nombre = f'OO_{utils.limpiar_nombre(zona)[:20]}'
-        ws = wb.create_sheet(nombre)
-        escribir_oferta_ocupacion(ws, df_oo, zona, header_fill, header_font, border, center)
+    # 6. EXCEL DE DATOS OCUPACIÓN (con 2 hojas: autos y motos)
+    wb_ocup = Workbook()
+    del wb_ocup['Sheet']
     
-    # TABLAS OFERTA/LLEGADAS
-    for zona, df_ol in resultados['tablas_oferta_llegadas'].items():
-        nombre = f'OvsL_{utils.limpiar_nombre(zona)[:20]}'
-        ws = wb.create_sheet(nombre)
-        escribir_oferta_llegadas(ws, df_ol, zona, header_fill, header_font, border, center)
+    ws_autos = wb_ocup.create_sheet('AUTOS')
+    escribir_datos_ocupacion_por_tipo(ws_autos, header_fill, header_font, resultados, 'autos')
     
-    # TABLAS OFERTA/IRT
-    for zona, df_irt in resultados['tablas_oferta_irt'].items():
-        nombre = f'IRT_{utils.limpiar_nombre(zona)[:20]}'
-        print(f"Creando hoja: {nombre} para zona: {zona}")
-        ws = wb.create_sheet(nombre)
-        escribir_oferta_irt(ws, df_irt, zona, header_fill, header_font, border, center)
+    ws_motos = wb_ocup.create_sheet('MOTOS')
+    escribir_datos_ocupacion_por_tipo(ws_motos, header_fill, header_font, resultados, 'motos')
     
-    # TABLAS LLEGADAS/OFERTA
-    for zona, df_ratio in resultados['tablas_llegadas_oferta_ratio'].items():
-        nombre = f'LO_{utils.limpiar_nombre(zona)[:20]}'
-        print(f"Creando hoja: {nombre} para zona: {zona}")
-        ws = wb.create_sheet(nombre)
-        escribir_llegadas_oferta_ratio(ws, df_ratio, zona, header_fill, header_font, border, center)
+    wb_ocup.save(excel_dir / 'datos_ocupacion.xlsx')
     
-    # DATOS OCUPACIÓN
-    ws = wb.create_sheet('DATOS_OCUPACIÓN')
-    escribir_datos_ocupacion(ws, header_fill, header_font, resultados)
+    # 7. EXCEL DE DURACIONES (con 2 hojas: autos y motos)
+    wb_dur = Workbook()
+    del wb_dur['Sheet']
     
-    wb.save(output_dir / 'analisis_estacionamiento.xlsx')
+    ws_dur_autos = wb_dur.create_sheet('AUTOS')
+    escribir_duraciones_por_tipo(ws_dur_autos, resultados, header_fill, header_font, border, center, 'autos')
+    
+    ws_dur_motos = wb_dur.create_sheet('MOTOS')
+    escribir_duraciones_por_tipo(ws_dur_motos, resultados, header_fill, header_font, border, center, 'motos')
+    
+    wb_dur.save(excel_dir / 'duraciones.xlsx')

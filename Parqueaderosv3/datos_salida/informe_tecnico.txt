@@ -1,6 +1,6 @@
 ================================================================================
 INFORME TÉCNICO - ANÁLISIS DE ESTACIONAMIENTO
-Fecha: 2026-01-08 15:48
+Fecha: 2026-01-08 16:23
 ================================================================================
 
 1. DATOS DE ENTRADA
@@ -27,178 +27,80 @@ Fecha: 2026-01-08 15:48
    AUTOS - TIPICO:
       Ocupación Máxima: 79
       Demanda total: 311
-      Oferta Real Total: 210
-      Ocupación Media: 22.90%
-      Duración Media (Dm): 3:20
-      Índice de Rotación Total (IRt): 1.481
-      Índice de Rotación Horario: 0.148
-      Tasa de Llegada: 1.5
-      Tasa de Salida: 1.4
-      Reserva de estacionamiento: 131
+      Duración Media (Dm): 2:44
 
    AUTOS - SABADO:
       Ocupación Máxima: 27
       Demanda total: 65
-      Oferta Real Total: 210
-      Ocupación Media: 6.11%
-      Duración Media (Dm): 1:33
-      Índice de Rotación Total (IRt): 0.31
-      Índice de Rotación Horario: 0.052
-      Tasa de Llegada: 0.3
-      Tasa de Salida: 0.3
-      Reserva de estacionamiento: 183
+      Duración Media (Dm): 1:00
 
    AUTOS - DOMINGO:
       Ocupación Máxima: 31
       Demanda total: 52
-      Oferta Real Total: 210
-      Ocupación Media: 4.29%
-      Duración Media (Dm): 1:12
-      Índice de Rotación Total (IRt): 0.248
-      Índice de Rotación Horario: 0.041
-      Tasa de Llegada: 0.2
-      Tasa de Salida: 0.2
-      Reserva de estacionamiento: 179
+      Duración Media (Dm): 2:09
 
 >>> EL PEÑON
 
    AUTOS - TIPICO:
       Ocupación Máxima: 165
       Demanda total: 735
-      Oferta Real Total: 366
-      Ocupación Media: 31.15%
-      Duración Media (Dm): 3:06
-      Índice de Rotación Total (IRt): 2.008
-      Índice de Rotación Horario: 0.201
-      Tasa de Llegada: 2.0
-      Tasa de Salida: 1.8
-      Reserva de estacionamiento: 201
+      Duración Media (Dm): 2:32
 
    AUTOS - SABADO:
       Ocupación Máxima: 198
       Demanda total: 666
-      Oferta Real Total: 366
-      Ocupación Media: 44.44%
-      Duración Media (Dm): 1:45
-      Índice de Rotación Total (IRt): 1.82
-      Índice de Rotación Horario: 0.303
-      Tasa de Llegada: 1.8
-      Tasa de Salida: 1.4
-      Reserva de estacionamiento: 168
+      Duración Media (Dm): 1:20
 
    AUTOS - DOMINGO:
       Ocupación Máxima: 166
       Demanda total: 509
-      Oferta Real Total: 366
-      Ocupación Media: 32.06%
-      Duración Media (Dm): 1:19
-      Índice de Rotación Total (IRt): 1.391
-      Índice de Rotación Horario: 0.232
-      Tasa de Llegada: 1.4
-      Tasa de Salida: 1.1
-      Reserva de estacionamiento: 200
+      Duración Media (Dm): 1:08
 
 >>> GRANADA
 
    AUTOS - TIPICO:
       Ocupación Máxima: 421
       Demanda total: 1756
-      Oferta Real Total: 992
-      Ocupación Media: 29.13%
-      Duración Media (Dm): 3:01
-      Índice de Rotación Total (IRt): 1.77
-      Índice de Rotación Horario: 0.177
-      Tasa de Llegada: 1.8
-      Tasa de Salida: 1.6
-      Reserva de estacionamiento: 571
+      Duración Media (Dm): 2:36
 
    AUTOS - SABADO:
       Ocupación Máxima: 75
       Demanda total: 75
-      Oferta Real Total: 992
-      Ocupación Media: 2.52%
       Duración Media (Dm): 0:00
-      Índice de Rotación Total (IRt): 0.076
-      Índice de Rotación Horario: 0.025
-      Tasa de Llegada: 0.1
-      Tasa de Salida: 0.1
-      Reserva de estacionamiento: 917
 
 >>> SAN ANTONIO
 
    AUTOS - TIPICO:
       Ocupación Máxima: 134
       Demanda total: 584
-      Oferta Real Total: 717
-      Ocupación Media: 14.83%
-      Duración Media (Dm): 3:40
-      Índice de Rotación Total (IRt): 0.815
-      Índice de Rotación Horario: 0.081
-      Tasa de Llegada: 0.8
-      Tasa de Salida: 0.7
-      Reserva de estacionamiento: 583
+      Duración Media (Dm): 2:25
 
    AUTOS - SABADO:
       Ocupación Máxima: 5
       Demanda total: 16
-      Oferta Real Total: 717
-      Ocupación Media: 0.42%
-      Duración Media (Dm): 1:07
-      Índice de Rotación Total (IRt): 0.022
-      Índice de Rotación Horario: 0.004
-      Tasa de Llegada: 0.0
-      Tasa de Salida: 0.0
-      Reserva de estacionamiento: 712
+      Duración Media (Dm): 1:02
 
    AUTOS - DOMINGO:
       Ocupación Máxima: 3
       Demanda total: 5
-      Oferta Real Total: 717
-      Ocupación Media: 0.20%
       Duración Media (Dm): 0:00
-      Índice de Rotación Total (IRt): 0.007
-      Índice de Rotación Horario: 0.001
-      Tasa de Llegada: 0.0
-      Tasa de Salida: 0.0
-      Reserva de estacionamiento: 714
 
 >>> SAN FERNANDO (PARQUE DEL PERRO)
 
    AUTOS - TIPICO:
       Ocupación Máxima: 393
       Demanda total: 1566
-      Oferta Real Total: 801
-      Ocupación Media: 28.28%
-      Duración Media (Dm): 3:28
-      Índice de Rotación Total (IRt): 1.955
-      Índice de Rotación Horario: 0.196
-      Tasa de Llegada: 2.0
-      Tasa de Salida: 1.8
-      Reserva de estacionamiento: 408
+      Duración Media (Dm): 2:33
 
    AUTOS - SABADO:
       Ocupación Máxima: 212
       Demanda total: 709
-      Oferta Real Total: 801
-      Ocupación Media: 18.64%
-      Duración Media (Dm): 1:43
-      Índice de Rotación Total (IRt): 0.885
-      Índice de Rotación Horario: 0.148
-      Tasa de Llegada: 0.9
-      Tasa de Salida: 0.7
-      Reserva de estacionamiento: 589
+      Duración Media (Dm): 1:18
 
    AUTOS - DOMINGO:
       Ocupación Máxima: 125
       Demanda total: 437
-      Oferta Real Total: 801
-      Ocupación Media: 12.42%
-      Duración Media (Dm): 1:38
-      Índice de Rotación Total (IRt): 0.546
-      Índice de Rotación Horario: 0.091
-      Tasa de Llegada: 0.5
-      Tasa de Salida: 0.4
-      Reserva de estacionamiento: 676
+      Duración Media (Dm): 1:20
 
 4. ARCHIVOS GENERADOS
 ----------------------------------------

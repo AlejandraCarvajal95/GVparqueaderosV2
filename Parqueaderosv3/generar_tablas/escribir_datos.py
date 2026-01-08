@@ -337,68 +337,69 @@ def escribir_datos_ocupacion_por_tipo(ws, header_fill, header_font, resultados, 
             row += 2
 
 def escribir_duraciones_por_tipo(ws, resultados, header_fill, header_font, border, center, tipo_veh):
-    """Escribe datos de duraciones por vehículo para un tipo de vehículo específico."""
-    ws['A1'] = f'Duraciones por Vehículo - Vías - {tipo_veh.upper()}'
+    """Escribe datos de duraciones por vehículo para un tipo de vehículo específico (vías y parqueaderos)."""
+    ws['A1'] = f'Duraciones por Vehículo - {tipo_veh.upper()}'
     ws['A1'].font = Font(bold=True, size=12)
     
     row = 3
-    for key, datos in resultados['via'][tipo_veh].items():
-        if 'df_duraciones' not in datos or datos['df_duraciones'] is None:
-            continue
-        
-        df_dur = datos['df_duraciones']
-        if len(df_dur) == 0:
-            continue
-        
-        zona, tipo_dia = key.rsplit('_', 1)
-        
-        ws[f'A{row}'] = f'{zona} - {tipo_dia}'
-        ws[f'A{row}'].font = Font(bold=True)
-        row += 1
-        
-        # Headers
-        headers = ['PLACA', 'DIA', 'HORA_ENTRADA', 'HORA_SALIDA', 'DURACION_HORAS']
-        for col, h in enumerate(headers, 1):
-            cell = ws.cell(row=row, column=col, value=h)
-            cell.fill = header_fill
-            cell.font = header_font
-            cell.border = border
-            cell.alignment = center
-        row += 1
-        
-        # Datos
-        for _, row_data in df_dur.iterrows():
-            for col, key_col in enumerate(headers, 1):
-                value = row_data[key_col]
-                # Formatear timestamps como "HH:MM"
-                if key_col in ['HORA_ENTRADA', 'HORA_SALIDA']:
-                    if hasattr(value, 'strftime'):
-                        value = value.strftime("%H:%M")
-                    else:
-                        value = str(value)
-                elif key_col == 'DURACION_HORAS':
-                    # Convertir decimal a formato HH:MM
-                    horas = int(value)
-                    minutos = int((value - horas) * 60)
-                    value = f"{horas}:{minutos:02d}"
-                
-                cell = ws.cell(row=row, column=col, value=value)
-                cell.border = border
-                if key_col in ['HORA_ENTRADA', 'HORA_SALIDA', 'DURACION_HORAS']:
-                    cell.alignment = center
+    for tipo_est in ['via', 'parqueadero']:
+        for key, datos in resultados[tipo_est][tipo_veh].items():
+            if 'df_duraciones' not in datos or datos['df_duraciones'] is None:
+                continue
+            
+            df_dur = datos['df_duraciones']
+            if len(df_dur) == 0:
+                continue
+            
+            zona, tipo_dia = key.rsplit('_', 1)
+            
+            ws[f'A{row}'] = f'{tipo_est.upper()} - {zona} - {tipo_dia}'
+            ws[f'A{row}'].font = Font(bold=True)
             row += 1
-        
-        # Resumen
-        ws.cell(row=row, column=1, value='TOTAL VEHÍCULOS:').font = Font(bold=True)
-        ws.cell(row=row, column=2, value=len(df_dur)).font = Font(bold=True)
-        row += 1
-        
-        ws.cell(row=row, column=1, value='DURACIÓN PROMEDIO:').font = Font(bold=True)
-        dur_prom = df_dur['DURACION_HORAS'].mean()
-        horas_prom = int(dur_prom)
-        minutos_prom = int((dur_prom - horas_prom) * 60)
-        ws.cell(row=row, column=2, value=f"{horas_prom}:{minutos_prom:02d}").font = Font(bold=True)
-        row += 3
+            
+            # Headers
+            headers = ['PLACA', 'DIA', 'HORA_ENTRADA', 'HORA_SALIDA', 'DURACION_HORAS']
+            for col, h in enumerate(headers, 1):
+                cell = ws.cell(row=row, column=col, value=h)
+                cell.fill = header_fill
+                cell.font = header_font
+                cell.border = border
+                cell.alignment = center
+            row += 1
+            
+            # Datos
+            for _, row_data in df_dur.iterrows():
+                for col, key_col in enumerate(headers, 1):
+                    value = row_data[key_col]
+                    # Formatear timestamps como "HH:MM"
+                    if key_col in ['HORA_ENTRADA', 'HORA_SALIDA']:
+                        if hasattr(value, 'strftime'):
+                            value = value.strftime("%H:%M")
+                        else:
+                            value = str(value)
+                    elif key_col == 'DURACION_HORAS':
+                        # Convertir decimal a formato HH:MM
+                        horas = int(value)
+                        minutos = int((value - horas) * 60)
+                        value = f"{horas}:{minutos:02d}"
+                    
+                    cell = ws.cell(row=row, column=col, value=value)
+                    cell.border = border
+                    if key_col in ['HORA_ENTRADA', 'HORA_SALIDA', 'DURACION_HORAS']:
+                        cell.alignment = center
+                row += 1
+            
+            # Resumen
+            ws.cell(row=row, column=1, value='TOTAL VEHÍCULOS:').font = Font(bold=True)
+            ws.cell(row=row, column=2, value=len(df_dur)).font = Font(bold=True)
+            row += 1
+            
+            ws.cell(row=row, column=1, value='DURACIÓN PROMEDIO:').font = Font(bold=True)
+            dur_prom = df_dur['DURACION_HORAS'].mean()
+            horas_prom = int(dur_prom)
+            minutos_prom = int((dur_prom - horas_prom) * 60)
+            ws.cell(row=row, column=2, value=f"{horas_prom}:{minutos_prom:02d}").font = Font(bold=True)
+            row += 3
     
     # Ajustar anchos
     ws.column_dimensions['A'].width = 15

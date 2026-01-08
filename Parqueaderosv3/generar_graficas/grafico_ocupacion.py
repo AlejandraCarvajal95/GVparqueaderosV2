@@ -71,8 +71,8 @@ def calcular_ocupacion_via(df_procesado, df_capacidades, zona, tipo_dia, tipo_ve
             hora_salida = max(horas_v)
             
             # Solo contar si entró durante el análisis (no estaba antes) y salió durante el análisis (no está al final)
-            entro_durante_analisis = hora_entrada >= hora_min
-            salio_durante_analisis = hora_salida <= hora_max
+            entro_durante_analisis = hora_entrada > hora_min  # Entró DESPUÉS del inicio, no estaba antes
+            salio_durante_analisis = hora_salida < hora_max  # Salió ANTES del final, no está todavía estacionado
             
             if entro_durante_analisis and salio_durante_analisis:
                 # Usar HORA_COMPLETA (timestamp) para cálculo preciso
@@ -117,14 +117,14 @@ def calcular_ocupacion_via(df_procesado, df_capacidades, zona, tipo_dia, tipo_ve
         'indicadores': {
             'Ocupación Máxima': round(ocup_max, 0),
             'Demanda total': round(total_ent, 0),
-            'Oferta Real Total': round(capacidad, 0),
-            'Ocupación Media': f"{ocup_media_pct:.2f}%",
+            # 'Oferta Real Total': round(capacidad, 0),
+            # 'Ocupación Media': f"{ocup_media_pct:.2f}%",
             'Duración Media (Dm)': dur_media_formato,
-            'Índice de Rotación Total (IRt)': round(irt, 3),
-            'Índice de Rotación Horario': round(irh, 3),
-            'Tasa de Llegada': round(total_ent / capacidad if capacidad > 0 else 0, 1),
-            'Tasa de Salida': round(total_sal / capacidad if capacidad > 0 else 0, 1),
-            'Reserva de estacionamiento': round(capacidad - ocup_max, 0)
+            # 'Índice de Rotación Total (IRt)': round(irt, 3),
+            # 'Índice de Rotación Horario': round(irh, 3),
+            # 'Tasa de Llegada': round(total_ent / capacidad if capacidad > 0 else 0, 1),
+            # 'Tasa de Salida': round(total_sal / capacidad if capacidad > 0 else 0, 1),
+            # 'Reserva de estacionamiento': round(capacidad - ocup_max, 0)
         },
         'total_vehiculos': total_veh,
         'n_fechas': len(fechas)
@@ -184,12 +184,73 @@ def calcular_ocupacion_parqueadero(df_parqueaderos, zona, tipo_dia, tipo_vehicul
                 capacidad += float(cap)
             except (ValueError, TypeError):
                 pass
+    
+    # Indicadores
+    ocup_max = max(ocupacion_por_hora.values()) if ocupacion_por_hora else 0
+    total_ent = sum(entradas_por_hora.values())
+    
+    # Duración media para parqueaderos (emparejar entradas con salidas por placa)
+    hora_min = min(horas)
+    hora_max = max(horas)
+    
+    duraciones_data = []
+    for fecha in fechas:
+        df_fecha = df_f[df_f['DIA'] == fecha]
+        for placa in df_fecha['PLACA'].unique():
+            df_placa = df_fecha[df_fecha['PLACA'] == placa]
+            
+            # Obtener entradas y salidas
+            entradas = df_placa[df_placa['TIPO_ENT_SAL'] == 'ENTRADA'].sort_values('HORA_COMPLETA')
+            salidas = df_placa[df_placa['TIPO_ENT_SAL'] == 'SALIDA'].sort_values('HORA_COMPLETA')
+            
+            if len(entradas) == 0 or len(salidas) == 0:
+                continue
+            
+            # Emparejar cada entrada con su salida correspondiente
+            for i in range(min(len(entradas), len(salidas))):
+                entrada = entradas.iloc[i]
+                salida = salidas.iloc[i]
+                
+                hora_entrada = entrada['HORA']
+                hora_salida = salida['HORA']
+                
+                # Solo contar si entró después del inicio y salió antes del final
+                if hora_entrada > hora_min and hora_salida < hora_max:
+                    timestamp_entrada = entrada['HORA_COMPLETA']
+                    timestamp_salida = salida['HORA_COMPLETA']
+                    
+                    # Calcular duración en horas
+                    duracion = (timestamp_salida - timestamp_entrada).total_seconds() / 3600
+                    
+                    if duracion > 0:
+                        duraciones_data.append({
+                            'PLACA': placa,
+                            'DIA': fecha,
+                            'HORA_ENTRADA': timestamp_entrada,
+                            'HORA_SALIDA': timestamp_salida,
+                            'DURACION_HORAS': duracion
+                        })
+    
+    # Crear DataFrame de duraciones
+    df_duraciones = pd.DataFrame(duraciones_data) if duraciones_data else pd.DataFrame(columns=['PLACA', 'DIA', 'HORA_ENTRADA', 'HORA_SALIDA', 'DURACION_HORAS'])
+    dur_media = df_duraciones['DURACION_HORAS'].mean() if len(df_duraciones) > 0 else 0
+    
+    # Convertir duración media a formato HH:MM
+    horas_dur = int(dur_media)
+    minutos_dur = int((dur_media - horas_dur) * 60)
+    dur_media_formato = f"{horas_dur}:{minutos_dur:02d}"
         
     return {
         'ocupacion_por_hora': ocupacion_por_hora,
         'entradas_por_hora': entradas_por_hora,
         'salidas_por_hora': salidas_por_hora,
         'capacidad': capacidad,
+        'df_duraciones': df_duraciones,
+        'indicadores': {
+            'Ocupación Máxima': round(ocup_max, 0),
+            'Demanda total': round(total_ent, 0),
+            'Duración Media (Dm)': dur_media_formato,
+        },
         'n_fechas': len(fechas)
     }
             

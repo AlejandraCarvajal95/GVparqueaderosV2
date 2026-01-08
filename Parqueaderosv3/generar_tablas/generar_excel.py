@@ -17,18 +17,26 @@ def generar_excel(zonas,df_autos,df_motos,df_parqueaderos, resultados, output_di
     center = Alignment(horizontal='center', vertical='center')
     
     # 1. EXCEL DE INDICADORES
-    if resultados['via']['autos'] or resultados['via']['motos']:
-        wb_ind = Workbook()
-        del wb_ind['Sheet']
-        
-        if resultados['via']['autos']:
-            ws = wb_ind.create_sheet('IND_VIA_AUTOS')
-            escribir_indicadores(ws, resultados['via']['autos'], 'INDICADORES - AUTOS EN VÍA', header_fill, header_font, border, center)
-        
-        if resultados['via']['motos']:
-            ws = wb_ind.create_sheet('IND_VIA_MOTOS')
-            escribir_indicadores(ws, resultados['via']['motos'], 'INDICADORES - MOTOS EN VÍA', header_fill, header_font, border, center)
-        
+    wb_ind = Workbook()
+    del wb_ind['Sheet']
+    
+    if resultados['via']['autos']:
+        ws = wb_ind.create_sheet('IND_VIA_AUTOS')
+        escribir_indicadores(ws, resultados['via']['autos'], 'INDICADORES - AUTOS EN VÍA', header_fill, header_font, border, center)
+    
+    if resultados['via']['motos']:
+        ws = wb_ind.create_sheet('IND_VIA_MOTOS')
+        escribir_indicadores(ws, resultados['via']['motos'], 'INDICADORES - MOTOS EN VÍA', header_fill, header_font, border, center)
+    
+    if resultados['parqueadero']['autos']:
+        ws = wb_ind.create_sheet('IND_PARQ_AUTOS')
+        escribir_indicadores(ws, resultados['parqueadero']['autos'], 'INDICADORES - AUTOS EN PARQUEADERO', header_fill, header_font, border, center)
+    
+    if resultados['parqueadero']['motos']:
+        ws = wb_ind.create_sheet('IND_PARQ_MOTOS')
+        escribir_indicadores(ws, resultados['parqueadero']['motos'], 'INDICADORES - MOTOS EN PARQUEADERO', header_fill, header_font, border, center)
+    
+    if len(wb_ind.worksheets) > 0:
         wb_ind.save(excel_dir / 'indicadores.xlsx')
     
     # 2. EXCEL DE OFERTA Y OCUPACIÓN

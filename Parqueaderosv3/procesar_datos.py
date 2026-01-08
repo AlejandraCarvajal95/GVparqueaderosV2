@@ -89,7 +89,7 @@ def procesar_parqueaderos(df_parqueaderos):
     # Convertir TIMESTAMP a datetime y crear columnas DIA y HORA
     df_parqueaderos["FechaHora"] = pd.to_datetime(df_parqueaderos["FechaHora"])
     df_parqueaderos["DIA"] = df_parqueaderos["FechaHora"].dt.date
-    df_parqueaderos["HORA_COMPLETA"] = df_parqueaderos["FechaHora"].dt.strftime("%H:%M")  # Para referencia
+    df_parqueaderos["HORA_COMPLETA"] = df_parqueaderos["FechaHora"]  # Guardar timestamp completo para duraciones
     df_parqueaderos["HORA"] = df_parqueaderos["FechaHora"].dt.hour  # Para cálculos
 
     #tipo de dia
@@ -101,7 +101,7 @@ def procesar_parqueaderos(df_parqueaderos):
 
     # Renombrar y reordenar columnas 
     df_parqueaderos.rename(columns={"Placa_Mayus": "PLACA", "Tipo(Entrada/Salida)": "TIPO_ENT_SAL", "Parqueadero": "PARQUEADERO", "tipo_dia": "TIPO_DIA", "sector": "ZONA", "cap_capacidad_autos": "CAPACIDAD_AUTOS", "cap_capacidad_motos": "CAPACIDAD_MOTOS"}, inplace=True)
-    df_parqueaderos_procesado = df_parqueaderos[["DIA", "HORA", "PLACA", "TIPO_DIA", "ZONA",  "TIPO_ENT_SAL",  "CAPACIDAD_AUTOS", "CAPACIDAD_MOTOS", "TIPO_VEHICULO","DIA_SEMANA", "TIPO_DIA_CALC", "PARQUEADERO"]].copy()
+    df_parqueaderos_procesado = df_parqueaderos[["DIA", "HORA", "HORA_COMPLETA", "PLACA", "TIPO_DIA", "ZONA",  "TIPO_ENT_SAL",  "CAPACIDAD_AUTOS", "CAPACIDAD_MOTOS", "TIPO_VEHICULO","DIA_SEMANA", "TIPO_DIA_CALC", "PARQUEADERO"]].copy()
 
     return df_parqueaderos_procesado
  

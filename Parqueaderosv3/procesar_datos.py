@@ -60,6 +60,13 @@ def procesar_autos(df_autos):
     df_autos['DIA_SEMANA'] = df_autos['timestamp'].dt.dayofweek
     df_autos['TIPO_DIA_CALC'] = df_autos['DIA_SEMANA'].apply(utils.clasificar_dia)
 
+    # DEBUG: Verificar si hay placas de motos en la hoja de autos
+    df_autos['TIPO_VEHICULO_CALC'] = df_autos['plate'].apply(utils.clasificar_vehiculo_placa)
+    placas_motos_en_autos = df_autos[df_autos['TIPO_VEHICULO_CALC'] == 'MOTO']['plate'].unique()
+    if len(placas_motos_en_autos) > 0:
+        print(f"\n⚠️ ADVERTENCIA: Se encontraron {len(placas_motos_en_autos)} placas de incorrectas en la hoja de AUTOS:")
+        print(placas_motos_en_autos)  # Mostrar primeras 10
+     
     # Renombrar y reordenar columnas 
     df_autos.rename(columns={"plate": "PLACA", "codigo": "CODIGO_MANZANA", "tipo_dia": "TIPO_DIA", "sector": "ZONA"}, inplace=True)
     df_autos_procesado = df_autos[["DIA", "HORA", "HORA_COMPLETA", "PLACA", "CODIGO_MANZANA", "TIPO_DIA", "ZONA", "DIA_SEMANA", "TIPO_DIA_CALC"]].copy()
@@ -77,6 +84,14 @@ def procesar_motos(df_motos):
     #tipo de dia
     df_motos['DIA_SEMANA'] = pd.to_datetime(df_motos["DIA"]).dt.dayofweek
     df_motos['TIPO_DIA_CALC'] = df_motos['DIA_SEMANA'].apply(utils.clasificar_dia)
+
+    # DEBUG: Verificar si hay placas de autos en la hoja de motos
+    df_motos['TIPO_VEHICULO_CALC'] = df_motos['PLACA'].apply(utils.clasificar_vehiculo_placa)
+    placas_autos_en_motos = df_motos[df_motos['TIPO_VEHICULO_CALC'] == 'AUTO']['PLACA'].unique()
+    if len(placas_autos_en_motos) > 0:
+        print(f"\n⚠️ ADVERTENCIA: Se encontraron {len(placas_autos_en_motos)} placas de incorrectas en la hoja de MOTOS:")
+        print(placas_autos_en_motos)  
+ 
 
     # Renombrar y reordenar columnas 
     df_motos.rename(columns={"LADO MANZANA": "CODIGO_MANZANA", "tipo_dia": "TIPO_DIA", "sector": "ZONA"}, inplace=True)

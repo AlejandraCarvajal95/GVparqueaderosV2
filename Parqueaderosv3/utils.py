@@ -13,6 +13,8 @@ def clasificar_vehiculo_placa(placa):
     if pd.isna(placa):
         return 'DESCONOCIDO'
     placa = str(placa).upper().strip()
+    # Limpiar caracteres no alfanuméricos (puntos, espacios extra, etc.)
+    placa = ''.join(c for c in placa if c.isalnum())
     if len(placa) == 6 and placa[-1].isalpha():
         return 'MOTO'
     return 'AUTO'

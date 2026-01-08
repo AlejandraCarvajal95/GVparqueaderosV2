@@ -1,7 +1,7 @@
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from datetime import datetime
-from generar_tablas.escribir_datos import escribir_datos_ocupacion, escribir_indicadores, escribir_oferta_ocupacion, escribir_oferta_llegadas, escribir_oferta_irt, escribir_llegadas_oferta_ratio, escribir_duraciones, escribir_datos_ocupacion_por_tipo, escribir_duraciones_por_tipo
+from generar_tablas.escribir_datos import escribir_datos_ocupacion, escribir_indicadores, escribir_oferta_ocupacion, escribir_oferta_llegadas, escribir_oferta_irt, escribir_llegadas_oferta_ratio, escribir_duraciones, escribir_datos_ocupacion_por_tipo, escribir_duraciones_por_tipo, escribir_duraciones_especifico
 import utils
 
 def generar_excel(zonas,df_autos,df_motos,df_parqueaderos, resultados, output_dir):
@@ -99,14 +99,20 @@ def generar_excel(zonas,df_autos,df_motos,df_parqueaderos, resultados, output_di
     
     wb_ocup.save(excel_dir / 'datos_ocupacion.xlsx')
     
-    # 7. EXCEL DE DURACIONES (con 2 hojas: autos y motos)
+    # 7. EXCEL DE DURACIONES (con 4 hojas separadas por tipo de establecimiento y vehículo)
     wb_dur = Workbook()
     del wb_dur['Sheet']
     
-    ws_dur_autos = wb_dur.create_sheet('AUTOS')
-    escribir_duraciones_por_tipo(ws_dur_autos, resultados, header_fill, header_font, border, center, 'autos')
+    ws_dur_via_autos = wb_dur.create_sheet('DUR_VIA_AUTOS')
+    escribir_duraciones_especifico(ws_dur_via_autos, resultados, header_fill, header_font, border, center, 'via', 'autos')
     
-    ws_dur_motos = wb_dur.create_sheet('MOTOS')
-    escribir_duraciones_por_tipo(ws_dur_motos, resultados, header_fill, header_font, border, center, 'motos')
+    ws_dur_via_motos = wb_dur.create_sheet('DUR_VIA_MOTOS')
+    escribir_duraciones_especifico(ws_dur_via_motos, resultados, header_fill, header_font, border, center, 'via', 'motos')
+    
+    ws_dur_parq_autos = wb_dur.create_sheet('DUR_PARQ_AUTOS')
+    escribir_duraciones_especifico(ws_dur_parq_autos, resultados, header_fill, header_font, border, center, 'parqueadero', 'autos')
+    
+    ws_dur_parq_motos = wb_dur.create_sheet('DUR_PARQ_MOTOS')
+    escribir_duraciones_especifico(ws_dur_parq_motos, resultados, header_fill, header_font, border, center, 'parqueadero', 'motos')
     
     wb_dur.save(excel_dir / 'duraciones.xlsx')

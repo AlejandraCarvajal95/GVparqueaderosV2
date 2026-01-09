@@ -1,12 +1,12 @@
 ================================================================================
 INFORME TÉCNICO - ANÁLISIS DE ESTACIONAMIENTO
-Fecha: 2026-01-08 16:53
+Fecha: 2026-01-09 08:25
 ================================================================================
 
 1. DATOS DE ENTRADA
 ----------------------------------------
-   Autos en vía: 12,956 registros, 6,497 placas únicas
-   Motos en vía: 6,727 registros, 3,364 placas únicas
+   Autos en vía: 12,893 registros, 6,437 placas únicas
+   Motos en vía: 6,738 registros, 3,375 placas únicas
    Parqueaderos: 1,839 movimientos
 
    Zonas: CENTENARIO, EL PEÑON, GRANADA, SAN ANTONIO, SAN FERNANDO (PARQUE DEL PERRO)
@@ -105,7 +105,7 @@ Fecha: 2026-01-08 16:53
 4. ARCHIVOS GENERADOS
 ----------------------------------------
    - Excel: analisis_estacionamiento.xlsx
-   - Gráficas: 90 archivos HTML
+   - Gráficas: 99 archivos HTML
 
 5. OBSERVACIONES
 ----------------------------------------

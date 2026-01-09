@@ -24,8 +24,16 @@ if __name__ == "__main__":
    # df_tasas_cargado_salidas, df_tasas_cargado_llegadas = cargar_tasas_expansionDB('datos_entrada/tasas_de_expansion.xlsx')
 
     # Procesar cada hoja de estacionamientos
-    df_autos_procesado = procesar_autos(df_est_cargado[0])
-    df_motos_procesado = procesar_motos(df_est_cargado[1])
+    df_autos_procesado, registros_motos_transferidos = procesar_autos(df_est_cargado[0])
+    
+    # Agregar registros de motos transferidos desde autos al df de motos
+    if registros_motos_transferidos is not None and len(registros_motos_transferidos) > 0:
+        import pandas as pd
+        df_motos_combinado = pd.concat([df_est_cargado[1], registros_motos_transferidos], ignore_index=True)
+    else:
+        df_motos_combinado = df_est_cargado[1]
+    
+    df_motos_procesado = procesar_motos(df_motos_combinado)
     df_parqueaderos_procesado = procesar_parqueaderos(df_est_cargado[2])
 
   

@@ -16,6 +16,11 @@ def calcular_ocupacion_via(df_procesado, df_capacidades, zona, tipo_dia, tipo_ve
     
     fechas = df_f['DIA'].unique()
     horas = utils.obtener_rango_horas(df_f, tipo_dia)
+    
+    # Validar que horas no esté vacío
+    if not horas or len(horas) == 0:
+        return None
+    
     ocupacion_por_hora = {}
     entradas_por_hora = {}
     salidas_por_hora = {}
